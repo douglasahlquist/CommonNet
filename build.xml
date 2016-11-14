@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<project  name="Build Common Networking API"  basedir="." default="all">
+
+<property environment="env"/>
+<property file="build.properties"/>
+
+<property name="work.dir" location="."/>
+
+
+<property name="java.src" location="./src"/>
+<property name="build.home" location="./build"/>
+<property name="dist.home" location="./lib"/>
+
+<property name="common_utils" location="../Common_Utils1.0"/>
+	
+    <path id="java.compile.classpath">
+            <pathelement location="C:/dev/jaf-1.1ea"/>
+	    <pathelement location="${build.home}"/>
+            <pathelement location="${dist.home}"/>
+	    <fileset dir="${dist.home}">
+	      <include name="*.jar"/>
+	    </fileset>
+		<fileset dir="${env.ANT_HOME}/lib">
+	      <include name="*.jar"/>
+	    </fileset>
+    </path>
+
+<target name="all">
+   <!-- <antstructure output="buildsystem.dtd"/> -->
+   <antcall target="clean"/>
+   <antcall target="init"/>
+<!--  <antcall target="dependancies"/> -->
+   <antcall target="build"/>
+   <antcall target="pack"/>
+   <antcall target="javadoc"/>
+</target>
+
+<target name="clean">
+   <delete dir="./build"/>
+<!--   <delete dir="./lib"/>   -->
+</target>
+
+<target name="dependancies" description="Calls and build the dependancies">
+    <echo message="Building dependancies..."/>
+    <ant dir="${common_utils}" antfile="build.xml" inheritAll="no" inheritRefs="no"/>
+    <copy todir="./lib">
+        <fileset dir="${common_utils}/lib">
+		    <include name="**/*.jar"/>
+		</fileset>
+    </copy>
+</target>
+
+<target name="init">
+   <mkdir dir="./build"/>
+   <mkdir dir="./lib"/>
+</target>
+
+<target name="build"
+    depends="init"
+>
+   
+    <javac srcdir="${java.src}"
+          destdir="${build.home}"
+           debug="yes"
+     deprecation="no"
+        optimize="yes">
+        <classpath refid="java.compile.classpath"/>
+
+       
+ 
+    </javac>
+
+</target>
+
+<target name="pack">
+  <echo message="Creating Archive file..."/>
+  <mkdir dir="${dist.home}"/>
+  
+  <echo message="Creating the ahlquist_commons_net1.0.jar file..."/>
+  <jar
+     destfile="${dist.home}/ahlquist_commons_net1.0.jar"
+     basedir="${build.home}"
+     includes="**/*.class"
+     compress="no" 
+     update="yes"
+  />
+
+</target>
+
+
+<target name="javadoc">
+  <echo message="app.projDir=${app.projDir}"/>
+  <mkdir dir="./JavaDoc"/>
+  <javadoc packagenames="com.ahlquist.*,tools.ahlquist.*"
+           sourcepath="./src"
+           excludepackagenames="tools.ahlquist.server.*"
+           defaultexcludes="yes"
+           destdir="./JavaDoc"
+           author="true"
+           version="true"
+           use="true"
+           maxmemory="256m"
+           protected="true"
+           header="true"
+           splitindex="true" 
+           windowtitle="Ahlquist.com Systems API">
+       <classpath refid="java.compile.classpath"/>
+       <doctitle><![CDATA[<h1><center><img src="http://www.ahlquist.com/images/ahlquist_at.gif" 
+               width="160" height="70" alt="Ahlquist.com"><br><FONT face="arial" size="4">Ahlquist Common 1.0 API</FONT></center></h1>]]>
+       </doctitle>
+       <bottom><![CDATA[<font face="arial"><i>Copyright &#169; 2002,2003,2004,2005 <A href="http://www.ahlquist.com" target="_blank">http://www.ahlquist.com</A> All Rights Reserved.</i></font>]]></bottom>
+       <group title="Group 1 Packages" packages="com.*"/>
+<!--    <link offline="true" href="http://java.sun.com/products/jdk/1.2/docs/api/" packagelistLoc="C:\tmp"/> -->
+<!--    <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/> -->
+  </javadoc>
+</target>
+
+
+
+</project>
