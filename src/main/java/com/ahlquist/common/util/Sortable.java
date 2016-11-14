@@ -1,0 +1,35 @@
+/*   @(#)  Sortable.java  2002-02-04
+*
+*  Copyright(C) 2002, All Rights Reserved.
+*  Ahlquist.com
+*  516 Suisse Drive
+*  San Jose, California 95123
+*  U.S.A.
+*
+*  This document contains information proprietary and confidential to
+*  Ahlquist.com, which is either copyrighted or which a
+*  patent has been applied and/or protected by trade secret laws.
+*
+*  This document, or any parts thereof, may not be used, disclosed,
+*  or reproduced in any form, by any method, or for any purpose without
+*  the express written permission of Ahlquist.com.
+*
+*
+*/
+
+package com.ahlquist.common.util;
+
+/**
+ * an interface any sortable class should implement
+ */
+public interface Sortable {
+	/**
+	 * this method will return the position of a object used for sorting purpose
+	 */
+	public int getPosition();
+
+	/**
+	 * this method will return end position of the object
+	 */
+	public int getEndPosition();
+}
